@@ -14,7 +14,6 @@ namespace MVVMFirstTry.DataContext
         {
             var options = new DbContextOptionsBuilder<UserDataContext>();
             options.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=Cagri.dogan1");
-            //options.UseSqlServer("workstation id=default.mssql.somee.com;packet size=4096;user id=cagridogan08_SQLLogin_1;pwd=p5mcsnzrt3;data source=default.mssql.somee.com;persist security info=False;initial catalog=default");
             return new UserDataContext(options.Options);
         }
     }
