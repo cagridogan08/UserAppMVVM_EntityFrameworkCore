@@ -1,0 +1,93 @@
+﻿<Window x:Class="MVVMFirstTry.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVVMFirstTry"
+        xmlns:vm="clr-namespace:MVVMFirstTry.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Username"
+                   Grid.Row="1"
+                   Grid.Column="1"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"/>
+        <TextBox Grid.Column="2"
+                 Grid.Row="1"
+                  Width="160"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Center"
+                 Text="{Binding User.Username}"/>
+        <TextBlock Text="Password"
+                   Grid.Row="2"
+                   Grid.Column="1"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"/>
+        <TextBox Grid.Column="2"
+                 Grid.Row="2"
+                 Width="160"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Center"
+                 Text="{Binding User.Password}"/>
+        <Button Content="Add"
+                Grid.Column="3"
+                Grid.Row="1"
+                Width="60"
+                Height="60"
+                Command="{Binding AddCommand}"/>
+        <Button Content="Update"
+                Grid.Column="3"
+                Grid.Row="1"
+                Width="60"
+                Height="60"
+                Command="{Binding UpdateCommand}"
+                Grid.ColumnSpan="2" />
+        <Button Content="Delete"
+                Grid.Row="1"
+                Grid.Column="4"
+                Width="60"
+                Height="60"
+                Command="{Binding DeleteCommand}"/>
+        <ListView x:Name="lst" 
+                  Grid.Row="2"
+                  Grid.Column="3"
+                  Grid.RowSpan="3"
+                  Grid.ColumnSpan="2"
+                  SelectedItem="{Binding SelectedUser}"
+                  ItemsSource="{Binding UserList}">
+            <ListView.View>
+                <GridView x:Name="UserGrid">
+                    <GridViewColumn Header="UserId" DisplayMemberBinding="{Binding Id}"  Width="120"/>
+                    <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}" Width="120"/>
+                    <GridViewColumn Header="Password" DisplayMemberBinding="{Binding Password}" Width="120"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBlock Text="{Binding SelectedUser.Username}"
+                   Grid.Column="1"
+                   Grid.Row="4"/>
+        <TextBlock Text="{Binding SelectedUser.Password}"
+                   Grid.Column="1"
+                   Grid.Row="5"
+                   />
+
+    </Grid>
+</Window>
