@@ -1,0 +1,49 @@
+image: mcr.microsoft.com/dotnet/sdk:latest
+
+# ### Define variables
+#
+variables:
+  # 1) Name of directory where restore and build objects are stored.
+  OBJECTS_DIRECTORY: 'obj'
+  # 2) Name of directory used for keeping restored dependencies.
+  NUGET_PACKAGES_DIRECTORY: 'MVVMFirstTry/'
+  # 3) A relative path to the source code from project repository root.
+  # NOTE: Please edit this path so it matches the structure of your project!
+  SOURCE_CODE_PATH: 'MVVMFirstTry/'
+cache:
+  key: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
+  paths:
+    - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/project.assets.json'
+    # 2) Other NuGet and MSBuild related files. Also needed.
+    - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/*.csproj.nuget.*'
+    # 3) Path to the directory where restored dependencies are kept.
+    - '$NUGET_PACKAGES_DIRECTORY'
+  policy: pull-push
+
+
+
+before_script:
+  - 'dir'
+  - 'cd IDC850_Simulator'
+  - 'dir'
+  - 'dotnet build'
+build:
+  stage: build
+  script:
+    - echo "merge request"
+    - 'dotnet build --no-restore'
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # merge request geldiğinde build et
+  runs-on: self-hosted
+tests:
+  stage: test
+  script:
+    - echo "test"
+    - 'dotnet test --no-restore'
+  runs-on: self-hosted
+  dependencies:
+    - build # merge request 
+
+    # needs: ["build"]  # 
+
+
