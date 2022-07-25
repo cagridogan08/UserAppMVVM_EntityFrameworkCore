@@ -1,40 +1,48 @@
-# .NET Desktop
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-# Build and run tests for .NET Desktop or Windows classic desktop solutions.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+image: mcr.microsoft.com/dotnet/sdk:latest
 
-trigger:
-- main
-
-pool:
-  vmImage: 'windows-latest'
-
+# ### Define variables
+#
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  # 1) Name of directory where restore and build objects are stored.
+  OBJECTS_DIRECTORY: 'obj'
+  # 2) Name of directory used for keeping restored dependencies.
+  NUGET_PACKAGES_DIRECTORY: 'MVVMFirstTry/'
+  # 3) A relative path to the source code from project repository root.
+  # NOTE: Please edit this path so it matches the structure of your project!
+  SOURCE_CODE_PATH: 'MVVMFirstTry/'
+cache:
+  key: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
+  paths:
+    - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/project.assets.json'
+    # 2) Other NuGet and MSBuild related files. Also needed.
+    - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/*.csproj.nuget.*'
+    # 3) Path to the directory where restored dependencies are kept.
+    - '$NUGET_PACKAGES_DIRECTORY'
+  policy: pull-push
 
-steps:
-- task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+before_script:
+  - 'dir'
+  - 'cd IDC850_Simulator'
+  - 'dir'
+  - 'dotnet build'
+  runs-on: self-hosted
+build:
+  stage: build
+  script:
+    - echo "merge request"
+    - 'dotnet build --no-restore'
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # merge request geldiğinde build et
+  runs-on: self-hosted
+tests:
+  stage: test
+  script:
+    - echo "test"
+    - 'dotnet test --no-restore'
+  runs-on: self-hosted
+  dependencies:
+    - build # merge request 
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    # needs: ["build"]  # 
