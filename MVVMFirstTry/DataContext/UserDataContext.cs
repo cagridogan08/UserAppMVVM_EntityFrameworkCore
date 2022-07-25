@@ -15,9 +15,7 @@ namespace MVVMFirstTry.DataContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
             modelBuilder.Entity<User>().HasKey(e => e.Id);
-            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

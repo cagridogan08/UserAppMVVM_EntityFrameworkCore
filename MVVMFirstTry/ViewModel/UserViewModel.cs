@@ -138,7 +138,7 @@ namespace MVVMFirstTry.ViewModel
         }
         private bool CanUpdate(object para)
         {
-            if (string.IsNullOrEmpty(User.Username) || string.IsNullOrEmpty(User.Password)||SelectedUser==null)
+            if (string.IsNullOrEmpty(User.Username) || string.IsNullOrEmpty(User.Password)||SelectedUser==null||(SelectedUser.Password==User.Password&&SelectedUser.Username==User.Username))
             {
                 if (UserList.Count == 0)
                 {

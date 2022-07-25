@@ -30,5 +30,18 @@ namespace MVVMFirstTry.Models
         {
             return username+":"+password;
         }
+        public override bool Equals(object? obj)
+        {
+            if(obj == null)
+            {
+                return false;
+            }
+            if(obj.GetType() != typeof(User))
+            {
+                return false;
+            }
+            var User2 = (User) obj;
+            return User2.Username.Equals(Username)&&User2.Password.Equals(Password)&&User2.Id.Equals(Id);
+        }
     }
 }
