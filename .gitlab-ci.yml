@@ -27,6 +27,7 @@ before_script:
   - 'cd IDC850_Simulator'
   - 'dir'
   - 'dotnet build'
+  runs-on: self-hosted
 build:
   stage: build
   script:
